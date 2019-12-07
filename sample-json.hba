@@ -1,0 +1,12 @@
+[
+    {{#repeat 10}}
+    {
+      "id": {{@index}},
+      "name": "{{firstName}} {{lastName}}",
+      "work": "{{company}}",
+      "email": "{{email}}",
+      "address": "{{int 1 100}} {{street}}",
+      "city": "{{city}}"
+    }
+    {{/repeat}}
+]

@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-node-api
+
+  Sample SAM Template for sam-node-api
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  UsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        Users:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: get
+      Environment:
+        Variables:
+          NODE_ENV: prod
+
+Outputs:
+  UsersApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/"
+  UsersFunction:
+    Description: "Users Lambda Function ARN"
+    Value: !GetAtt UsersFunction.Arn
+  UsersFunctionIamRole:
+    Description: "Implicit IAM Role created for Users function"
+    Value: !GetAtt UsersFunctionRole.Arn
