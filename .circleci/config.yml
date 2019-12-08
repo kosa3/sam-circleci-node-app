@@ -56,6 +56,15 @@ jobs:
       - attach_workspace:
           at: .
       - run: yarn run test
+  security:
+    executor:
+      name: default
+    steps:
+      - checkout:
+          path: ~/repo
+      - attach_workspace:
+          at: .
+      - audit_yarn_packages
   build:
     working_directory: ~/repo
     executor: aws-serverless/default
@@ -98,7 +107,7 @@ orbs:
   aws-serverless: circleci/aws-serverless@1.0.2
 workflows:
   version: 2.1
-  deploy:
+  deploy-prod:
     jobs:
       - setup
       - unit-test:
@@ -116,15 +125,15 @@ workflows:
           filters:
             branches:
               only: master
-      - e2e:
-          requires:
-            - deploy
-          filters:
-            branches:
-              only: master
+#      - e2e:
+#          requires:
+#            - deploy
+#          filters:
+#            branches:
+#              only: master
       - swagger:
-          requires:
-            - e2e
+#          requires:
+#            - e2e
           filters:
             branches:
               only: master
