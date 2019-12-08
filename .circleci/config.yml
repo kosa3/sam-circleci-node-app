@@ -56,6 +56,7 @@ jobs:
       - attach_workspace:
           at: .
   build:
+    working_directory: ~/repo
     executor: aws-serverless/default
     steps:
       - checkout:
