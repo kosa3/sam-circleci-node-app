@@ -98,6 +98,7 @@ jobs:
           command: |
             sed -i "s|https://petstore.swagger.io/v2/swagger.json|swagger.yml|g" /usr/share/nginx/html/index.html
             cp /usr/share/nginx/html/* docs/dist
+            cp docs/swagger.yml docs/dist
       - store_artifacts:
           path: docs/dist
 orbs:
