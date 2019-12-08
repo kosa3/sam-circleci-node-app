@@ -6,5 +6,4 @@ stack_name = "sam-circleci-node-app"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-uw8ds4ncxnp2"
 s3_prefix = "sam-circleci-node-app"
 region = "ap-northeast-1"
-confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
