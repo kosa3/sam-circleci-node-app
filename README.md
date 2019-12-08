@@ -55,3 +55,12 @@ $ docker-compose up
 $ aws s3 --endpoint-url=http://localhost:4572 mb s3://test-bucket
 $ aws s3 --endpoint-url=http://localhost:4572 cp sample.json s3://test-bucket
 ```
+
+## CircleCI Setup
+
+local setting
+```bash
+$ circleci config process .circleci/config.yml > process.yml
+$ circleci local execute -c process.yml --job ${jobName}
+
+```

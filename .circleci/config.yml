@@ -1,0 +1,126 @@
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:12.13.1
+  unit_test_container:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:12.13.1
+      - image: localstack/localstack
+  swagger_ui_container:
+    working_directory: ~/repo
+    docker:
+      - image: swaggerapi/swagger-ui:v3.19.3
+
+commands:
+  dependencies_yarn_packages:
+    steps:
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+  build:
+    steps:
+      - run:
+          yarn run build
+  audit_yarn_packages:
+    steps:
+      - run:
+          yarn audit
+
+jobs:
+  setup:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - dependencies_yarn_packages
+  unit-test:
+    executor:
+      name: unit_test_container
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+  build:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - dependencies_yarn_packages
+      - build
+  security:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - audit_yarn_packages
+  deploy:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+  swagger:
+    executor:
+      name: swagger_ui_container
+    steps:
+      - checkout
+      - run:
+          name: install ca-certificates for circleci
+          command: |
+            set -x
+            apk add --no-cache ca-certificates
+      - run:
+          name: create swagger-ui
+          command: |
+            sed -i "s|https://petstore.swagger.io/v2/swagger.json|swagger.yml|g" /usr/share/nginx/html/index.html
+            cp /usr/share/nginx/html/* docs/api/dist
+      - store_artifacts:
+          path: docs/api/dist
+orbs:
+  aws-serverless: circleci/aws-serverless@1.0.2
+workflows:
+  version: 2.1
+  deploy:
+    jobs:
+      - setup
+      - unit-test:
+          requires:
+            - setup
+      - security:
+          requires:
+            - unit-test
+      - build:
+          requires:
+            - security
+#      - deploy:
+#            requires:
+#              - build
+#            filters:
+#              branches:
+#                only: master
+#      - e2e
+      - swagger:
+          requires:
+            - build

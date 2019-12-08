@@ -1,0 +1,51 @@
+swagger: "2.0"
+info:
+  description: "This is a sample api document."
+  version: "1.0.0"
+  title: "sam-circleci-node-app"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /users:
+    get:
+      description: "Show users information"
+      produces:
+        - "application/xml"
+        - "application/json"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid status value"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      work:
+        type: "string"
+      email:
+        type: "string"
+      address:
+        type: "string"
+      city:
+        type: "string"
+    xml:
+      name: "User"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      body:
+        type: "array"
+        items:
+          $ref: "#/definitions/User"

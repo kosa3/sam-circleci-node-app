@@ -11,11 +11,22 @@
     "aws-sdk": "^2.585.0"
   },
   "scripts": {
-    "test": "NODE_ENV=local mocha tests/unit/"
+    "test": "NODE_ENV=local nyc mocha tests/unit/",
+    "ci": "yarn run test && codecov"
   },
   "devDependencies": {
     "aws-sdk-mock": "^4.5.0",
     "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+    "codecov": "^3.6.1",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1"
+  },
+  "nyc": {
+    "reporter": [
+      "text",
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true
   }
 }
