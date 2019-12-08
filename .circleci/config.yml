@@ -14,10 +14,6 @@ executors:
     working_directory: ~/repo
     docker:
       - image: swaggerapi/swagger-ui:v3.19.3
-  deploy_container:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/python:3.7-stretch
 
 commands:
   dependencies_yarn_packages:
@@ -81,19 +77,13 @@ jobs:
       - aws-serverless/install
       - run: sam build
   deploy:
-    executor:
-      name: deploy_container
+    executor: aws-serverless/default
     steps:
       - checkout:
           path: ~/repo
       - attach_workspace:
           at: .
-      - run:
-          name: Install awscli
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python-pip python-dev
-            sudo pip install awscli aws-sam-cli
+      - aws-serverless/install
       - run: sam deploy
   swagger:
     executor:
@@ -126,9 +116,10 @@ workflows:
             - setup
       - security:
           requires:
-            - unit-test
+            - setup
       - build:
           requires:
+            - unit-test
             - security
       - deploy:
           requires:
