@@ -46,8 +46,8 @@ jobs:
     executor:
       name: default
     steps:
-      - checkout
-        path: ~/repo/users
+      - checkout:
+          path: ~/repo/users
       - attach_workspace:
           at: .
       - dependencies_yarn_packages
@@ -55,16 +55,16 @@ jobs:
     executor:
       name: unit_test_container
     steps:
-      - checkout
-        path: ~/repo/users
+      - checkout:
+          path: ~/repo/users
       - attach_workspace:
           at: .
   build:
     executor:
       name: default
     steps:
-      - checkout
-        path: ~/repo/users
+      - checkout:
+          path: ~/repo/users
       - attach_workspace:
           at: .
       - dependencies_yarn_packages
@@ -73,8 +73,8 @@ jobs:
     executor:
       name: default
     steps:
-      - checkout
-        path: ~/repo/users
+      - checkout:
+          path: ~/repo/users
       - attach_workspace:
           at: .
       - audit_yarn_packages
@@ -82,16 +82,16 @@ jobs:
     executor:
       name: default
     steps:
-      - checkout
-        path: ~/repo/users
+      - checkout:
+          path: ~/repo/users
       - attach_workspace:
           at: .
   swagger:
     executor:
       name: swagger_ui_container
     steps:
-      - checkout
-        path: ~/repo/users
+      - checkout:
+          path: ~/repo/users
       - run:
           name: install ca-certificates for circleci
           command: |
