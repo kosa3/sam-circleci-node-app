@@ -86,7 +86,11 @@ jobs:
       - attach_workspace:
           at: .
       - aws-serverless/install
-      - run: sam deploy
+      - run:
+          name: Deploy
+          command: |
+            export SAM_CLI_TELEMETRY=0
+            sam deploy
   swagger:
     executor:
       name: swagger_ui_container
