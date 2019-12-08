@@ -78,7 +78,7 @@ jobs:
           path: ~/repo
       - attach_workspace:
           at: .
-      - sam/install
+      - aws-serverless/install
       - run: sam build
   deploy:
     executor:
@@ -115,7 +115,7 @@ jobs:
       - store_artifacts:
           path: docs/dist
 orbs:
-  aws-sam-serverless: circleci/aws-sam-serverless@1.0.1
+  aws-sam-serverless: circleci/aws-serverless@1.0.2
 workflows:
   version: 2.1
   deploy-prod:
