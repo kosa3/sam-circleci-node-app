@@ -2,11 +2,11 @@ version: 2.1
 
 executors:
   default:
-    working_directory: ~/repo
+    working_directory: ~/repo/users
     docker:
       - image: circleci/node:12.13.1
   unit_test_container:
-    working_directory: ~/repo
+    working_directory: ~/repo/users
     docker:
       - image: circleci/node:12.13.1
       - image: localstack/localstack
@@ -32,10 +32,6 @@ commands:
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-  build:
-    steps:
-      - run:
-          yarn run build
   audit_yarn_packages:
     steps:
       - run:
@@ -47,7 +43,7 @@ jobs:
       name: default
     steps:
       - checkout:
-          path: ~/repo/users
+          path: ~/repo
       - attach_workspace:
           at: .
       - dependencies_yarn_packages
@@ -56,25 +52,24 @@ jobs:
       name: unit_test_container
     steps:
       - checkout:
-          path: ~/repo/users
+          path: ~/repo
       - attach_workspace:
           at: .
   build:
-    executor:
-      name: default
+    executor: aws-serverless/default
     steps:
       - checkout:
-          path: ~/repo/users
+          path: ~/repo
       - attach_workspace:
           at: .
-      - dependencies_yarn_packages
-      - build
+      - aws-serverless/install
+      - run: sam build
   security:
     executor:
       name: default
     steps:
       - checkout:
-          path: ~/repo/users
+          path: ~/repo
       - attach_workspace:
           at: .
       - audit_yarn_packages
@@ -83,7 +78,7 @@ jobs:
       name: default
     steps:
       - checkout:
-          path: ~/repo/users
+          path: ~/repo
       - attach_workspace:
           at: .
   swagger:
@@ -91,7 +86,7 @@ jobs:
       name: swagger_ui_container
     steps:
       - checkout:
-          path: ~/repo/users
+          path: ~/repo
       - run:
           name: install ca-certificates for circleci
           command: |
