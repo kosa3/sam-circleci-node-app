@@ -11,8 +11,8 @@
     "aws-sdk": "^2.585.0"
   },
   "scripts": {
-    "test": "NODE_ENV=local nyc mocha tests/unit/",
-    "ci": "yarn run test && codecov"
+    "test": "NODE_ENV=local ./node_modules/.bin/nyc ./node_modules/.bin/mocha tests/unit/",
+    "ci": "yarn run test && ./node_modules/.bin/codecov"
   },
   "devDependencies": {
     "aws-sdk-mock": "^4.5.0",
