@@ -62,5 +62,27 @@ local setting
 ```bash
 $ circleci config process .circleci/config.yml > process.yml
 $ circleci local execute -c process.yml --job ${jobName}
+```
 
+## Build & Deploy
+```bash
+$ sam build
+  Building resource 'UsersFunction'
+  Running NodejsNpmBuilder:NpmPack
+  Running NodejsNpmBuilder:CopyNpmrc
+  Running NodejsNpmBuilder:CopySource
+  Running NodejsNpmBuilder:NpmInstall
+  Running NodejsNpmBuilder:CleanUpNpmrc
+  
+  Build Succeeded
+  
+  Built Artifacts  : .aws-sam/build
+  Built Template   : .aws-sam/build/template.yaml
+  
+  Commands you can use next
+  =========================
+  [*] Invoke Function: sam local invoke
+  [*] Deploy: sam deploy --guided
+
+$ sam deploy --guided
 ```

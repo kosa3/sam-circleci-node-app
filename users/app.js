@@ -11,7 +11,7 @@ const s3 = new AWS.S3(config)
 exports.lambdaHandler = async (event, context) => {
     try {
         const jsonObject = await s3.getObject({
-            Bucket: (process.env.NODE_ENV === 'local' ? 'test-bucket': `${AWS_S3_BUCKET}`),
+            Bucket: (process.env.NODE_ENV === 'local' ? 'test-bucket': process.env.S3_BUCKET),
             Key: 'sample.json'
         }).promise();
 

@@ -56,15 +56,6 @@ jobs:
       - attach_workspace:
           at: .
       - run: yarn run test
-  security:
-    executor:
-      name: default
-    steps:
-      - checkout:
-          path: ~/repo
-      - attach_workspace:
-          at: .
-      - audit_yarn_packages
   build:
     working_directory: ~/repo
     executor: aws-serverless/default
@@ -76,7 +67,6 @@ jobs:
       - aws-serverless/install
       - run: sam build
   deploy:
-    working_directory: ~/repo
     executor:
       name: default
     steps:
@@ -84,10 +74,7 @@ jobs:
           path: ~/repo
       - attach_workspace:
           at: .
-      - aws-serverless/deploy:
-          name: deploy
-          stack-name: production
-          template: ./template.yml
+      - run: sam deploy
   swagger:
     executor:
       name: swagger_ui_container
