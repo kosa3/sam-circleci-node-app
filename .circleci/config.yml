@@ -57,6 +57,8 @@ jobs:
           at: .
       - dependencies_yarn_packages
       - run: yarn run test
+      - store_artifacts:
+          path: coverage
   security:
     executor:
       name: default
