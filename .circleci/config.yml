@@ -97,9 +97,9 @@ jobs:
           name: create swagger-ui
           command: |
             sed -i "s|https://petstore.swagger.io/v2/swagger.json|swagger.yml|g" /usr/share/nginx/html/index.html
-            cp /usr/share/nginx/html/* docs/api/dist
+            cp /usr/share/nginx/html/* docs/dist
       - store_artifacts:
-          path: docs/api/dist
+          path: docs/dist
 orbs:
   aws-serverless: circleci/aws-serverless@1.0.2
 workflows:
