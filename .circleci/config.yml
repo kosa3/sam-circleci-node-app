@@ -115,7 +115,7 @@ jobs:
       - store_artifacts:
           path: docs/dist
 orbs:
-  aws-sam-serverless: circleci/aws-serverless@1.0.2
+  aws-serverless: circleci/aws-serverless@1.0.2
 workflows:
   version: 2.1
   deploy-prod:
