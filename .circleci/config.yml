@@ -17,7 +17,7 @@ executors:
   build_container:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:12.13.1
+      - image: circleci/python:3.7-stretch
 
 commands:
   dependencies_yarn_packages:
