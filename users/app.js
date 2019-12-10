@@ -2,11 +2,11 @@ let response;
 const AWS = require('aws-sdk')
 
 const config = {
-    endpoint: (process.env.NODE_ENV === 'local' ? 'http://127.0.0.1:4572' : ''),
-    s3ForcePathStyle: process.env.NODE_ENV === 'local',
+    endpoint: 'http://127.0.0.1:4572',
+    s3ForcePathStyle: true,
 }
 
-const s3 = new AWS.S3(config)
+const s3 = new AWS.S3(process.env.NODE_ENV === 'local' ? config : '')
 
 exports.lambdaHandler = async () => {
     try {
