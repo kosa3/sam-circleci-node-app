@@ -5,7 +5,6 @@ const chai = require('chai');
 const expect = chai.expect;
 const AWS = require('aws-sdk');
 const AWSMock = require('aws-sdk-mock');
-var event, context;
 
 describe('Tests users', function () {
     AWSMock.mock('S3', 'getObject', [{}])

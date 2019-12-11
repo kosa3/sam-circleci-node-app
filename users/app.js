@@ -10,7 +10,7 @@ const s3 = new AWS.S3(process.env.NODE_ENV === 'local' ? config : '')
 
 exports.lambdaHandler = async () => {
     try {
-        const jsonObject = await getUsers(s3);
+        const jsonObject = await module.exports.getUsers(s3);
 
         response = {
             'statusCode': 200,
