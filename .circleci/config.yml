@@ -119,6 +119,19 @@ jobs:
             cp docs/swagger.yml docs/dist
       - store_artifacts:
           path: docs/dist
+  e2e:
+    executor:
+      name: default
+    steps:
+      - checkout:
+          path: ~/repo
+      - attach_workspace:
+          at: .
+      - dependencies_yarn_packages
+      - run:
+          name: Run Puppeteer E2E Test
+          command: |
+            yarn run e2e
 orbs:
   aws-serverless: circleci/aws-serverless@1.0.2
 workflows:
@@ -142,12 +155,12 @@ workflows:
           filters:
             branches:
               only: master
-#      - e2e:
-#          requires:
-#            - deploy
-#          filters:
-#            branches:
-#              only: master
+      - e2e:
+          requires:
+            - deploy
+          filters:
+            branches:
+              only: master
       - swagger:
           requires:
             - deploy

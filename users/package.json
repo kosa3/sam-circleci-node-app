@@ -8,18 +8,20 @@
   "license": "MIT",
   "dependencies": {
     "aws-lambda": "^0.1.2",
-    "aws-sdk": "^2.585.0"
+    "aws-sdk": "^2.585.0",
+    "axios": "^0.19.0"
   },
   "scripts": {
     "test": "NODE_ENV=local ./node_modules/.bin/nyc ./node_modules/.bin/mocha tests/unit/",
-    "ci": "yarn run test && ./node_modules/.bin/codecov"
+    "e2e": "NODE_ENV=local ./node_modules/.bin/mocha tests/e2e/"
   },
   "devDependencies": {
     "aws-sdk-mock": "^4.5.0",
     "chai": "^4.2.0",
     "codecov": "^3.6.1",
     "mocha": "^6.1.4",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "puppeteer": "^2.0.0"
   },
   "nyc": {
     "reporter": [
