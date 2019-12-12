@@ -136,7 +136,7 @@ workflows:
           name: deploy
           stack-name: production-stack
           s3-bucket: aws-sam-cli-managed-default-samclisourcebucket-uw8ds4ncxnp2
-          template: ~/project/template.yml
+          template: ./template.yaml
           requires:
             - build
 #      - deploy:
