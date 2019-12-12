@@ -82,25 +82,6 @@ jobs:
           at: .
       - aws-serverless/install
       - run: sam --version && sam build
-  deploy:
-    executor:
-      name: build_container
-    steps:
-      - checkout:
-          path: ~/repo
-      - attach_workspace:
-          at: .
-      - run:
-          name: Install awscli
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python-pip python-dev
-            sudo pip install awscli aws-sam-cli
-            sam --version
-      - run:
-          name: Deploy
-          command: |
-            sam deploy
   swagger:
     executor:
       name: swagger_ui_container
@@ -151,12 +132,19 @@ workflows:
           requires:
             - unit-test
             - security
-      - deploy:
+      - aws-serverless/deploy:
+          name: deploy
+          stack-name: production-stack
+          s3-bucket: aws-sam-cli-managed-default-samclisourcebucket-uw8ds4ncxnp2
+          template: ./template.yml
           requires:
             - build
-          filters:
-            branches:
-              only: master
+#      - deploy:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only: master
       - e2e:
           requires:
             - deploy
