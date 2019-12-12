@@ -9,6 +9,7 @@ const VIEW_HEIGHT = 768;
 before(async function() {
     global.browser = await puppeteer.launch({
         headless: true,
+        ignoreDefaultArgs: ['--disable-extensions'],
         ignoreHTTPSErrors: true,
         arg: [
             `--window-size=${VIEW_WIDTH},${VIEW_HEIGHT}`
@@ -21,7 +22,7 @@ it ('get users test', async function() {
     const page = await global.browser.newPage();
     await page.setViewport({ width: VIEW_WIDTH, height: VIEW_HEIGHT });
 
-    await page.goto(`https://8lyd61d3l2.execute-api.ap-northeast-1.amazonaws.com/Prod/users`);
+    await page.goto(`${SAM_URI}/users`);
 
     let list = await page.$$('pre');
     const listTexts = [];
