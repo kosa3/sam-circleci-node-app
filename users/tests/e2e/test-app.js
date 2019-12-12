@@ -22,7 +22,7 @@ it ('get users test', async function() {
     const page = await global.browser.newPage();
     await page.setViewport({ width: VIEW_WIDTH, height: VIEW_HEIGHT });
 
-    await page.goto(`${SAM_URI}/users`);
+    await page.goto(`${process.env.SAM_URI}/users`);
 
     let list = await page.$$('pre');
     const listTexts = [];
