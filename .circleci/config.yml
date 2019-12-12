@@ -81,7 +81,7 @@ jobs:
       - attach_workspace:
           at: .
       - aws-serverless/install
-      - run: sam build
+      - run: sam --version && sam build
   deploy:
     executor:
       name: build_container
@@ -96,6 +96,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y python-pip python-dev
             sudo pip install awscli aws-sam-cli
+            sam --version
       - run:
           name: Deploy
           command: |
