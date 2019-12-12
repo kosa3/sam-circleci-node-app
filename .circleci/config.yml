@@ -133,6 +133,7 @@ workflows:
             - unit-test
             - security
       - aws-serverless/deploy:
+          working_directory: ~/repo
           name: deploy
           stack-name: production-stack
           s3-bucket: aws-sam-cli-managed-default-samclisourcebucket-uw8ds4ncxnp2
