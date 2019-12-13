@@ -36,10 +36,6 @@ commands:
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-  audit_yarn_packages:
-    steps:
-      - run:
-          yarn audit
 
 jobs:
   setup:
@@ -71,17 +67,9 @@ jobs:
           path: ~/repo
       - attach_workspace:
           at: .
-      - audit_yarn_packages
-  build:
-    working_directory: ~/repo
-    executor: aws-serverless/default
-    steps:
-      - checkout:
-          path: ~/repo
-      - attach_workspace:
-          at: .
-      - aws-serverless/install
-      - run: sam --version && sam build
+      - run:
+          name: Check Audit
+          command: yarn audit
   swagger:
     executor:
       name: swagger_ui_container
@@ -128,23 +116,14 @@ workflows:
       - security:
           requires:
             - setup
-      - build:
-          requires:
-            - unit-test
-            - security
       - aws-serverless/deploy:
           name: deploy
           stack-name: production-stack
           s3-bucket: aws-sam-cli-managed-default-samclisourcebucket-uw8ds4ncxnp2
           template: ./template.yaml
           requires:
-            - build
-#      - deploy:
-#          requires:
-#            - build
-#          filters:
-#            branches:
-#              only: master
+            - unit-test
+            - security
       - e2e:
           requires:
             - deploy
